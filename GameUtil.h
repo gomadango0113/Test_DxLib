@@ -1,5 +1,8 @@
 #pragma once
 
+void drawTextCenter(int x, int y, const char* string, int size, int text_color, int edge_color);
+void drawImageCenter(int img, int x, int y, float size);
+
 struct ObjectDxLib3D {
 	float x; //ベクトルx
 	float y; //ベクトルy

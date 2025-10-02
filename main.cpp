@@ -1,56 +1,57 @@
-#include <DxLib.h>
+#include "DxLib.h"
 #include <stdlib.h>
 #include <list>
 #include "GameUtil.h"
-#define FPS 60
+#include "GameManager.h"
+#include "main.h"
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd) {
     std::list<ObjectDxLib3D> object_3d_list = {};
 
     SetWindowText("ああああああああああああああああ");
-    SetGraphMode(1280, 720, 32);
+    SetGraphMode(WIDTH, HEIGHT, COLOR_BIT);
     ChangeWindowMode(true);
-    if (DxLib_Init() == -1) {
+    if (DxLib_Init() == -1 || initGame() == -1) {
+        MessageBox(NULL, "ゲームを初期化することができませんでした。", NULL, MB_OK | MB_ICONERROR);
+        DxLib_End();
         return -1;
     }
     SetBackgroundColor(0, 255, 0);
     SetDrawScreen(DX_SCREEN_BACK);
 
-    ObjectDxLib3D object_3d = { 320.0f, 200.0f, 0.0f, 80.0f, 32, GetColor(255, 0, 0), GetColor(255, 255, 255), TRUE };
-    object_3d_list.push_back(object_3d);
-
     int mouseX, mouseY; //マウスの座標
-    float speed = 3.0;
 
     while (true) {
         ClearDrawScreen();
         GetMousePoint(&mouseX, &mouseY);
 
-        SetUseZBuffer3D(TRUE);
-        SetWriteZBuffer3D(TRUE);
-
-        for (auto it = object_3d_list.begin(); it != object_3d_list.end(); ++it) {
-            ObjectDxLib3D& object = *it;
-            if (CheckHitKey(KEY_INPUT_W)) {
-                object.z+=speed;
-            }
-            if (CheckHitKey(KEY_INPUT_S)) {
-                object.z -= speed;
-            }
-            if (CheckHitKey(KEY_INPUT_A)) {
-                object.x -= speed;
-            }
-            if (CheckHitKey(KEY_INPUT_D)) {
-                object.x += speed;
-            }
+        switch (status)
+        {
+        case TITLE:
+            drawTextCenter(WIDTH * 0.5, HEIGHT * 0.5, "ゲームを開始するにはスペースキー", 30, GetColor(0, 0, 0), GetColor(255, 255, 255));
             if (CheckHitKey(KEY_INPUT_SPACE)) {
-                object.y += speed;
+                status = RUNNING;
             }
-            if (CheckHitKey(KEY_INPUT_LSHIFT)) {
-                object.y -= speed;
+            break;
+        case RUNNING:
+            drawImageCenter(player_object.image_handle, player_object.x, player_object.y, 0.2);
+
+            if (CheckHitKey(KEY_INPUT_LEFT)) {
+                player_object.x -= player_object.vectorX;
             }
-            
-            DrawSphere3D(VGet(object.x, object.y, object.z), object.radius, object.DivNum, object.object_color, object.specular_color, object.FillFlag);
+            if (CheckHitKey(KEY_INPUT_RIGHT)) {
+                player_object.x += player_object.vectorX;
+            }
+            if (CheckHitKey(KEY_INPUT_SPACE) && player_object.y >= HEIGHT * 0.8) {
+                player_object.vectorY = 10;
+            }
+
+            jump();
+            break;
+        case ENDING:
+            break;
+        default:
+            break;
         }
 
         ScreenFlip();

@@ -1,0 +1,7 @@
+﻿  main.cpp
+G:\開発\C_Dev\Test_DxLib\main.cpp(31,48): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+G:\開発\C_Dev\Test_DxLib\main.cpp(31,34): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+G:\開発\C_Dev\Test_DxLib\main.cpp(37,91): warning C4305: '引数': 'double' から 'float' へ切り詰めます。
+G:\開発\C_Dev\Test_DxLib\main.cpp(37,87): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+G:\開発\C_Dev\Test_DxLib\main.cpp(37,70): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+  Test_DxLib.vcxproj -> G:\開発\C_Dev\Test_DxLib\x64\Debug\Test_DxLib.exe

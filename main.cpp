@@ -20,6 +20,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
     SetDrawScreen(DX_SCREEN_BACK);
 
     int mouseX, mouseY; //マウスの座標
+    int w = 20;
+    int h = 40;
 
     while (true) {
         ClearDrawScreen();
@@ -34,7 +36,22 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
             }
             break;
         case RUNNING:
-            drawImageCenter(player_object.image_handle, player_object.x, player_object.y, 0.2);
+            DrawBox(player_object.x - w / 2, player_object.y - h / 2, player_object.x + w /2, player_object.y + h / 2, GetColor(255,255,255), true);
+
+            for (int y = 0; y < MAP_HEIGHT; y++) {
+                for (int x = 0; x < MAP_WIDTH; x++) {
+                    int map_x = x * MAP_PIXEL;
+                    int map_y = y * MAP_PIXEL;
+
+                    int player_mapX = player_object.x / MAP_PIXEL;
+                    int player_mapY = player_object.y / MAP_PIXEL;
+
+                    if (MAP[y][x] == 1) {
+                        DrawBox(map_x, map_y, map_x + MAP_PIXEL, map_y + MAP_PIXEL, GetColor(255, 255, 255), true);
+                    }
+                }
+            }
+
 
             if (CheckHitKey(KEY_INPUT_LEFT)) {
                 player_object.x -= player_object.vectorX;
@@ -42,7 +59,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
             if (CheckHitKey(KEY_INPUT_RIGHT)) {
                 player_object.x += player_object.vectorX;
             }
-            if (CheckHitKey(KEY_INPUT_SPACE) && player_object.y >= HEIGHT * 0.8) {
+            if (CheckHitKey(KEY_INPUT_SPACE) && player_object.y >= downY) {
                 player_object.vectorY = 10;
             }
 
